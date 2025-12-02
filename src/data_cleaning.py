@@ -17,3 +17,15 @@ def drop_missing_values(df):
     df = df.dropna(subset=['price', 'quantity'])
     return df
 
+#Convert data types to float for price and int for quantity to ensure correct calculations
+def convert_data_types(df):
+    """Convert data types of 'price' and 'quantity' columns."""
+    df['price'] = df['price'].astype(float)
+    df['quantity'] = df['quantity'].astype(int)
+    return df
+
+#Remove currency symbols from price to allow for numerical operations
+def remove_currency_symbols(df):
+    """Remove currency symbols from 'price' column."""
+    df['price'] = df['price'].replace('[\$,]', '', regex=True).astype(float)
+    return df
