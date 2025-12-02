@@ -1,1 +1,1 @@
-you are a noob!
+blank ism python project
