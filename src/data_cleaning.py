@@ -17,6 +17,12 @@ def drop_missing_values(df):
     df = df.dropna(subset=['price', 'quantity'])
     return df
 
+#Remove currency symbols from price to allow for numerical operations
+def remove_currency_symbols(df):
+    """Remove currency symbols from 'price' column."""
+    df['price'] = df['price'].replace('[\$,]', '', regex=True).astype(float)
+    return df
+
 #Convert data types to float for price and int for quantity to ensure correct calculations
 def convert_data_types(df):
     """Convert data types of 'price' and 'quantity' columns."""
@@ -24,19 +30,20 @@ def convert_data_types(df):
     df['quantity'] = df['quantity'].astype(int)
     return df
 
-#Remove currency symbols from price to allow for numerical operations
-def remove_currency_symbols(df):
-    """Remove currency symbols from 'price' column."""
-    df['price'] = df['price'].replace('[\$,]', '', regex=True).astype(float)
+#Remove rows with negative prices or quantities to prevent errors
+def remove_invalid_rows(df):
+    """Remove rows with negative 'price' or 'quantity'."""
+    df = df[(df['price'] >= 0) & (df['quantity'] >= 0)]
     return df
+
 
 if __name__ == "__main__":
     raw_path = "data/raw/sales_data_raw.csv"
     cleaned_path = "data/processed/sales_data_clean.csv"
 
     df_raw = load_data(raw_path)
-    df_clean = clean_column_names(df_raw)
-    df_clean = handle_missing_values(df_clean)
+    df_clean = uniform_column_names(df_raw)
+    df_clean = drop_missing_values(df_clean)
     df_clean = remove_invalid_rows(df_clean)
     df_clean.to_csv(cleaned_path, index=False)
     df_clean = convert_data_types(df_clean)
