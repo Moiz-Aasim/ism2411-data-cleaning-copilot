@@ -1,1 +1,1 @@
-blank ism python project
+This code cleans a messy .csv file dataset. It does so by creating uniformity in the columns, fixing or eliminating bad data, and making sure calculations can be properly done. This automatically creates a clean data set once run is pressed and the program is completed. 
